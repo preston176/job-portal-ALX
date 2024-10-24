@@ -1,7 +1,24 @@
+import Footer from "./components/Footer"
+import Navbar from "./components/Navbar"
+import { Outlet, Navigate, Route, Routes, useLocation } from "react-router-dom"
+
+const Layout = () => {
+  const user = true;
+  const location = useLocation();
+
+  return user ? <Outlet /> : <Navigate to={"user-auth"} state={{ from: location }} replace />;
+}
 
 const App = () => {
   return (
-    <div>App</div>
+    <div>
+      <Navbar />
+      <Routes>
+        <Route element={<Layout />} />
+        <Route path="/" element={<Navigate to="find-jobs" replace={true} />} />
+      </Routes>
+      <Footer />
+    </div>
   )
 }
 
