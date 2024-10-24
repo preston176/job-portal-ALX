@@ -1,3 +1,5 @@
+import Companies from "./components/Companies";
+import FindJobs from "./components/FindJobs";
 import Footer from "./components/Footer"
 import Navbar from "./components/Navbar"
 import { Outlet, Navigate, Route, Routes, useLocation } from "react-router-dom"
@@ -15,7 +17,9 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route element={<Layout />} />
-        <Route path="/" element={<Navigate to="find-jobs" replace={true} />} />
+        <Route path="/" element={<Navigate to="/find-jobs" replace={true} />} />
+        <Route path="/find-jobs" element={<FindJobs />} />
+        <Route path="/companies" element={<Companies />} />
       </Routes>
       <Footer />
     </div>
