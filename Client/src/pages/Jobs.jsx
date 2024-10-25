@@ -1,45 +1,38 @@
-// src/pages/Jobs.js
-
-import React, { useState } from 'react';
-
-const jobsData = [
-    {
-        id: 1,
-        title: 'Software Engineer',
-        company: 'Tech Company A',
-        location: 'Remote',
-        description: 'Develop and maintain web applications.',
-    },
-    {
-        id: 2,
-        title: 'Product Manager',
-        company: 'Tech Company B',
-        location: 'New York, NY',
-        description: 'Lead product development and strategy.',
-    },
-    {
-        id: 3,
-        title: 'Data Scientist',
-        company: 'Tech Company C',
-        location: 'San Francisco, CA',
-        description: 'Analyze data to drive business insights.',
-    },
-    {
-        id: 4,
-        title: 'Frontend Developer',
-        company: 'Tech Company D',
-        location: 'Los Angeles, CA',
-        description: 'Build user interfaces for web applications.',
-    },
-    // Add more job objects as needed
-];
+import React, { useEffect, useState } from 'react';
 
 const Jobs = () => {
+    const [jobsData, setJobsData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    // Fetch job data from the API
+    useEffect(() => {
+        const fetchJobs = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/jobs'); // Adjust the API URL if needed
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setJobsData(data);
+            } catch (error) {
+                setError('Failed to fetch jobs');
+                console.error("Error fetching jobs:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchJobs();
+    }, []);
 
     const filteredJobs = jobsData.filter((job) =>
         job.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
 
     return (
         <div className="container mx-auto p-4">
