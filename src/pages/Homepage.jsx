@@ -4,6 +4,8 @@ import Search from '../components/Search'
 import JobCard from '../components/JobCard'
 import TrustedBy from '../components/TrustedBy'
 import { useState } from 'react'
+import Testimonials from '../components/Testimonials'
+import WhyUs from '../components/WhyUs'
 
 const Homepage = () => {
 
@@ -39,7 +41,11 @@ const Homepage = () => {
                 </button>
             </div>
 
+            <WhyUs />
+
             <TrustedBy />
+
+            <Testimonials />
         </div>
     )
 }

@@ -32,9 +32,9 @@ const AboutPage = () => {
                 <div className="grid gap-6 mt-4 sm:grid-cols-2 lg:grid-cols-3">
                     <div className="bg-white shadow-md rounded-lg p-4">
                         <h3 className="font-bold text-xl">Preston Mayieka</h3>
-                        <p className="text-gray-600">Co-Founder & CEO</p>
+                        <p className="text-gray-600">Founder & CEO</p>
                         <p className="mt-2 text-gray-700">
-                            Preston is passionate about helping people find jobs that inspire them. With over 10 years of experience in the industry, she leads our team with vision and integrity.
+                            Preston is passionate about helping people find jobs that inspire them. With over years of experience in the industry, hhe leads our team with vision and integrity.
                         </p>
                     </div>
                     {/* <div className="bg-white shadow-md rounded-lg p-4">
