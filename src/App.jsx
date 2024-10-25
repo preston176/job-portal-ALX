@@ -10,14 +10,16 @@ const App = () => {
   return (
     <BrowserRouter>
       <Navbar />
-      <Routes>
-        {/* Homepage Route */}
-        <Route element={<Homepage />} path="/" />
-        <Route path="/jobs" element={<Jobs />} />
-        <Route path="/apply/:jobId" element={<Apply />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
+      <main className="bg-gray-100 min-h-screen p-4">
+        <Routes>
+          {/* Homepage Route */}
+          <Route element={<Homepage />} path="/" />
+          <Route path="/jobs" element={<Jobs />} />
+          <Route path="/apply/:jobId" element={<Apply />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </main>
     </BrowserRouter>
   )
 }
