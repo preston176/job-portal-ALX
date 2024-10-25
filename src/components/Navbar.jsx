@@ -14,7 +14,7 @@ const Navbar = () => {
                     </Link>
 
                     {/* Desktop Menu */}
-                    <div className="hidden md:flex space-x-4">
+                    <div className="hidden md:flex space-x-4 items-center">
                         <Link to="/" className="text-gray-600 hover:text-blue-600">
                             Home
                         </Link>
@@ -26,6 +26,15 @@ const Navbar = () => {
                         </Link>
                         <Link to="/contact" className="text-gray-600 hover:text-blue-600">
                             Contact
+                        </Link>
+                        <Link
+                            to="/login"
+                            className="text-gray-600 hover:text-blue-600"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            <button className="px-3 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150">
+                                Get Started
+                            </button>
                         </Link>
                     </div>
 
@@ -102,6 +111,15 @@ const Navbar = () => {
                             onClick={() => setIsOpen(false)}
                         >
                             Contact
+                        </Link>
+                        <Link
+                            to="/login"
+                            className="text-gray-600 hover:text-blue-600"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            <button className="px-3 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150">
+                                Get Started
+                            </button>
                         </Link>
                     </div>
                 </div>
