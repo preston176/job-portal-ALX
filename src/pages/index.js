@@ -8,12 +8,12 @@ import About from "./About";
 import JobDetail from "./JobDetail";
 
 export {
-    FindJobs,
-    AuthPage,
-    Companies,
-    UserProfile,
-    CompanyProfile,
-    UploadJob,
-    About,
-    JobDetail,
+  FindJobs,
+  AuthPage,
+  Companies,
+  UserProfile,
+  CompanyProfile,
+  UploadJob,
+  About,
+  JobDetail,
 };
