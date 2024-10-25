@@ -10,11 +10,11 @@ const Homepage = () => {
 
     // Array of job data
     const jobs = [
-        { jobTitle: "Software Engineer", companyName: "Tech Corp", location: "Remote" },
-        { jobTitle: "Data Scientist", companyName: "Data Inc.", location: "New York" },
-        { jobTitle: "Product Manager", companyName: "Startup LLC", location: "San Francisco" },
-        { jobTitle: "UI/UX Designer", companyName: "Design Studio", location: "Remote" },
-        { jobTitle: "Backend Developer", companyName: "Cloud Solutions", location: "Austin" }
+        { id: 1, jobTitle: "Software Engineer", companyName: "Tech Corp", location: "Remote" },
+        { id: 2, jobTitle: "Data Scientist", companyName: "Data Inc.", location: "New York" },
+        { id: 3, jobTitle: "Product Manager", companyName: "Startup LLC", location: "San Francisco" },
+        { id: 4, jobTitle: "UI/UX Designer", companyName: "Design Studio", location: "Remote" },
+        { id: 5, jobTitle: "Backend Developer", companyName: "Cloud Solutions", location: "Austin" }
     ];
 
 
@@ -25,7 +25,7 @@ const Homepage = () => {
             {/* Job Cards Grid */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 max-w-7xl mx-auto mt-8">
                 {jobs.slice(0, 3).map((job, index) => (
-                    <JobCard key={index} jobTitle={job.jobTitle} companyName={job.companyName} location={job.location} />
+                    <JobCard key={job.id} jobTitle={job.jobTitle} companyName={job.companyName} location={job.location} id={job.id} />
                 ))}
             </div>
             {/* View More Button */}
