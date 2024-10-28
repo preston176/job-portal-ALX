@@ -9,12 +9,20 @@ import Footer from "./components/Footer"
 import Login from "./pages/Login"
 import Signup from "./pages/SignUp"
 import AddJob from "./pages/AddJob"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AuthContext } from "./context/AuthContext"
+import MyApplications from "./pages/MyApplications"
 
 const App = () => {
-  const [auth, setAuth] = useState();
-  console.log(auth)
+  const [auth, setAuth] = useState(null);
+
+
+  useEffect(() => {
+    const storedAuth = localStorage.getItem('authUser');
+    if (storedAuth) {
+      setAuth(JSON.parse(storedAuth));
+    }
+  }, []);
 
   return (
     <BrowserRouter>
@@ -26,6 +34,7 @@ const App = () => {
             <Route element={<Homepage />} path="/" />
             <Route path="/jobs" element={<Jobs />} />
             {auth ? (<Route path="/apply/:jobId" element={<Apply />} />) : (<Route path="/apply/:jobId" element={<Login />} />)}
+            {auth && (<Route path="/myapplications" element={<MyApplications applicantEmail={auth?.email || auth?.providerData[0]?.email} />} />)}
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
