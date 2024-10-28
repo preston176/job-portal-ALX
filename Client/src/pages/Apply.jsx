@@ -1,8 +1,10 @@
 // src/pages/JobPage.jsx
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Apply = () => {
+    const { auth } = useContext(AuthContext);
     // Retrieve job ID from the URL parameters
     const { jobId } = useParams();
 
@@ -20,10 +22,10 @@ const Apply = () => {
 
     // State for form inputs
     const [formData, setFormData] = useState({
-        firstName: '',
+        firstName: auth.displayName,
         lastName: '',
-        email: '',
-        phone: ''
+        email: auth?.email || auth?.providerData[0]?.email,
+        phone: auth?.providerData[0]?.phone
     });
 
     // Handle input changes
@@ -33,18 +35,37 @@ const Apply = () => {
     };
 
     // Handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Process the form submission (e.g., send data to the server)
-        alert(`Application submitted for ${job.jobTitle} at ${job.companyName}`);
-        console.log(formData);
-        // Reset the form (optional)
-        setFormData({
-            firstName: '',
-            lastName: '',
-            email: '',
-            phone: ''
-        });
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/jobs/${jobId}/apply`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to submit application");
+            }
+
+            const result = await response.json();
+            alert(`Application submitted for ${job.jobTitle} at ${job.companyName}`);
+            console.log(result);
+
+            // Reset the form (optional)
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                phone: ''
+            });
+        } catch (error) {
+            console.error("Error submitting application:", error);
+            alert("There was an error submitting your application. Please try again.");
+        }
     };
 
     return (
@@ -90,6 +111,7 @@ const Apply = () => {
                             <div>
                                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
                                 <input
+                                    disabled
                                     type="email"
                                     name="email"
                                     id="email"

@@ -6,9 +6,10 @@ import TrustedBy from '../components/TrustedBy'
 import { useState } from 'react'
 import Testimonials from '../components/Testimonials'
 import WhyUs from '../components/WhyUs'
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Homepage = () => {
-
+    const navigate = useNavigate();
 
     // Array of job data
     const jobs = [
@@ -23,10 +24,11 @@ const Homepage = () => {
     return (
         <div>
             <Hero />
-            <Search />
+            {/* Featured Jobs */}
+            <h2 className='text-4xl font-bold text-center'>Featured Jobs</h2>
             {/* Job Cards Grid */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 max-w-7xl mx-auto mt-8">
-                {jobs.slice(0, 3).map((job, index) => (
+                {jobs.slice(0, 6).map((job) => (
                     <JobCard key={job.id} jobTitle={job.jobTitle} companyName={job.companyName} location={job.location} id={job.id} />
                 ))}
             </div>
@@ -34,7 +36,7 @@ const Homepage = () => {
 
             <div className="flex justify-center mt-6">
                 <button
-                    onClick={() => console.log("hello")}
+                    onClick={() => navigate("/jobs")}
                     className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-800 transition duration-150"
                 >
                     View More

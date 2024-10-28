@@ -14,8 +14,8 @@ import { AuthContext } from "./context/AuthContext"
 
 const App = () => {
   const [auth, setAuth] = useState();
-
   console.log(auth)
+
   return (
     <BrowserRouter>
       <AuthContext.Provider value={{ auth, setAuth }}>
@@ -31,7 +31,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             {/* Administrative routes */}
-            <Route path="/addjob" element={<AddJob />} />
+            <Route path="company/addjob" element={<AddJob />} />
           </Routes>
         </main>
         <Footer />
