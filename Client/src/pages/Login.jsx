@@ -1,14 +1,16 @@
 // src/pages/LoginPage.jsx
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, provider } from '../firebase'; // Ensure this imports correctly
 import { signInWithPopup, signInWithEmailAndPassword, GoogleAuthProvider } from "firebase/auth";
+import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { setAuth } = useContext(AuthContext);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -26,9 +28,10 @@ const Login = () => {
             const credential = GoogleAuthProvider.credentialFromResult(result);
             const token = credential.accessToken;
             const user = result.user;
+            setAuth(user);
             console.log("User Info:", user);
             console.log("Access Token:", token);
-            navigate('/'); // Redirect to homepage after login
+            // navigate('/'); // Redirect to homepage after login
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
