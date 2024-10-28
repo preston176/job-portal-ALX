@@ -1,39 +1,58 @@
-import React from 'react'
-import Hero from '../components/Hero'
-import Search from '../components/Search'
-import JobCard from '../components/JobCard'
-import TrustedBy from '../components/TrustedBy'
-import { useState } from 'react'
-import Testimonials from '../components/Testimonials'
-import WhyUs from '../components/WhyUs'
-import { Navigate, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import Hero from '../components/Hero';
+import Search from '../components/Search';
+import JobCard from '../components/JobCard';
+import TrustedBy from '../components/TrustedBy';
+import Testimonials from '../components/Testimonials';
+import WhyUs from '../components/WhyUs';
+import { useNavigate } from 'react-router-dom';
 
 const Homepage = () => {
     const navigate = useNavigate();
+    const [jobs, setJobs] = useState([]);
 
-    // Array of job data
-    const jobs = [
-        { id: 1, jobTitle: "Software Engineer", companyName: "Tech Corp", location: "Remote" },
-        { id: 2, jobTitle: "Data Scientist", companyName: "Data Inc.", location: "New York" },
-        { id: 3, jobTitle: "Product Manager", companyName: "Startup LLC", location: "San Francisco" },
-        { id: 4, jobTitle: "UI/UX Designer", companyName: "Design Studio", location: "Remote" },
-        { id: 5, jobTitle: "Backend Developer", companyName: "Cloud Solutions", location: "Austin" }
-    ];
+    // Fetch job data from the API and store in local storage
+    const fetchJobs = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/api/jobs'); // Adjust the API URL if needed
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
 
+            // Update the jobs state and local storage
+            setJobs(data);
+            localStorage.setItem('jobs', JSON.stringify(data));
+        } catch (error) {
+            console.error("Error fetching jobs:", error);
+        }
+    };
+
+    // Check for local storage data and fetch updates if needed
+    useEffect(() => {
+        const storedJobs = localStorage.getItem('jobs');
+        
+        if (storedJobs) {
+            setJobs(JSON.parse(storedJobs));
+        }
+
+        // Fetch fresh job data if not in local storage or to update cache
+        fetchJobs();
+
+        // Set an interval to check for updates periodically (e.g., every 5 minutes)
+        const updateInterval = setInterval(fetchJobs, 300000); // 300000ms = 5 minutes
+        return () => clearInterval(updateInterval); // Clear interval on component unmount
+    }, []);
 
     return (
         <div>
             <Hero />
-            {/* Featured Jobs */}
             <h2 className='text-4xl font-bold text-center'>Featured Jobs</h2>
-            {/* Job Cards Grid */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 max-w-7xl mx-auto mt-8">
                 {jobs.slice(0, 6).map((job) => (
-                    <JobCard key={job.id} jobTitle={job.jobTitle} companyName={job.companyName} location={job.location} id={job.id} />
+                    <JobCard key={job._id} description={job.description} jobTitle={job.title} companyName={job.company} location={job.location} id={job.id} />
                 ))}
             </div>
-            {/* View More Button */}
-
             <div className="flex justify-center mt-6">
                 <button
                     onClick={() => navigate("/jobs")}
@@ -42,14 +61,11 @@ const Homepage = () => {
                     View More
                 </button>
             </div>
-
             <WhyUs />
-
             <TrustedBy />
-
             <Testimonials />
         </div>
-    )
-}
+    );
+};
 
-export default Homepage
+export default Homepage;
