@@ -57,6 +57,38 @@ app.get('/api/jobs', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+// Apply for job route
+// Job application route
+app.post('/api/jobs/:id/apply', async (req, res) => {
+    try {
+        const jobId = req.params.id; // Get job ID from URL
+        const { firstName, lastName, email, phone } = req.body;
+
+        // Ensure all fields are present
+        if (!firstName || !lastName || !email || !phone) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
+
+        const db = await connectToDb();
+        const application = {
+            jobId,
+            applicant: {
+                firstName,
+                lastName,
+                email,
+                phone
+            },
+            appliedAt: new Date() // Timestamp for the application
+        };
+
+        const result = await db.collection('applications').insertOne(application); // Store in 'applications' collection
+        res.status(201).json({ message: "Application submitted successfully", id: result.insertedId });
+    } catch (error) {
+        console.error("Error submitting application:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
 
 // Add jobs route
 app.post('/api/jobs', async (req, res) => {

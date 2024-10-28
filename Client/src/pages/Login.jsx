@@ -31,7 +31,7 @@ const Login = () => {
             setAuth(user);
             console.log("User Info:", user);
             console.log("Access Token:", token);
-            // navigate('/'); // Redirect to homepage after login
+            navigate('/'); // Redirect to homepage after login
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;

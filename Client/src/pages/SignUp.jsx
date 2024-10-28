@@ -1,14 +1,16 @@
 // src/pages/SignupPage.jsx
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, provider } from '../firebase'; // Import your firebase configuration
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { AuthContext } from '../context/AuthContext';
 
 const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const {setAuth} = useContext(AuthContext);
 
     const handleSignup = async (e) => {
         e.preventDefault();
@@ -25,6 +27,7 @@ const Signup = () => {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
             console.log("User Info:", user);
+            setAuth(user);
             navigate('/'); // Redirect to homepage after signup
         } catch (error) {
             const errorCode = error.code;
