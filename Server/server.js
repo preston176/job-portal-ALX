@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors'); // Import the CORS package
 const MongoClient = require('mongodb').MongoClient;
 const ServerApiVersion = require('mongodb').ServerApiVersion;
+const { ObjectId } = require('mongodb');
 
 const app = express();
 const password = process.env.PASSWORD;
@@ -137,6 +138,26 @@ app.post('/api/jobs', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
+app.get('/api/jobs/:jobId', async (req, res) => {
+    try {
+        const jobId = req.params.jobId; // Get the job ID from URL parameters
+        const db = await connectToDb();
+
+        // Fetch the job document with the matching job ID
+        const job = await db.collection('jobs').findOne({ _id: new ObjectId(jobId) });
+
+        if (!job) {
+            return res.status(404).json({ error: "Job not found" });
+        }
+
+        res.json(job);
+    } catch (error) {
+        console.error("Error fetching job:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
 
 // Connect to database on app startup and handle errors appropriately
 (async () => {
