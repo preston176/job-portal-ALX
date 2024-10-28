@@ -88,6 +88,27 @@ app.post('/api/jobs/:id/apply', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+// get single applicants application
+app.get('/api/applications', async (req, res) => {
+    try {
+        const { email } = req.query; // Get applicant email from query parameters
+
+        // Ensure email is provided
+        if (!email) {
+            return res.status(400).json({ error: "Applicant email is required" });
+        }
+
+        const db = await connectToDb();
+
+        // Find applications where the applicant's email matches
+        const applications = await db.collection('applications').find({ "applicant.email": email }).toArray();
+
+        res.status(200).json({ applications });
+    } catch (error) {
+        console.error("Error fetching applications:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 
 
 // Add jobs route
