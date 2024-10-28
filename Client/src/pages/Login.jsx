@@ -15,7 +15,9 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            await signInWithEmailAndPassword(auth, email, password); // Pass auth as the first argument
+            const result = await signInWithEmailAndPassword(auth, email, password); // Pass auth as the first argument
+            const user = result.user;
+            localStorage.setItem('authUser', JSON.stringify(user));
             navigate('/'); // Redirect to homepage after login
         } catch (error) {
             setError(error.message);
@@ -29,6 +31,7 @@ const Login = () => {
             const token = credential.accessToken;
             const user = result.user;
             setAuth(user);
+            localStorage.setItem('authUser', JSON.stringify(user));
             console.log("User Info:", user);
             console.log("Access Token:", token);
             navigate('/'); // Redirect to homepage after login

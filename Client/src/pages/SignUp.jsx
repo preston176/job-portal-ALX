@@ -15,8 +15,11 @@ const Signup = () => {
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            navigate('/'); // Redirect to homepage after signup
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            setAuth(user);
+            localStorage.setItem('authUser', JSON.stringify(user));
+            navigate('/');
         } catch (error) {
             setError(error.message);
         }
@@ -28,6 +31,7 @@ const Signup = () => {
             const user = result.user;
             console.log("User Info:", user);
             setAuth(user);
+            localStorage.setItem('authUser', JSON.stringify(user));
             navigate('/'); // Redirect to homepage after signup
         } catch (error) {
             const errorCode = error.code;
