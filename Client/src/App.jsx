@@ -39,7 +39,7 @@ const App = () => {
               <Route element={<Homepage />} path="/" />
               <Route path="/jobs" element={<Jobs />} />
               {auth ? (<Route path="/apply/:jobId" element={<Apply />} />) : (<Route path="/apply/:jobId" element={<Login />} />)}
-              {auth && (<Route path="/myapplications" element={<MyApplications applicantEmail={auth?.email} />} />)}
+              {auth && (<Route path="/myapplications" element={<MyApplications />} />)}
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />

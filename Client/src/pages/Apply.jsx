@@ -54,7 +54,7 @@ const Apply = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`/api/jobs/${jobId}/apply`, {
+            const response = await fetch(`http://localhost:3000/api/jobs/${jobId}/apply`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
