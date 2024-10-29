@@ -47,7 +47,7 @@ const Signup = () => {
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
                 <h2 className="text-2xl font-bold text-center">Sign Up</h2>
                 {error && <p className="text-red-500 text-center">{error}</p>}
-                <form onSubmit={handleSignup} className="mt-4">
+                {/* <form onSubmit={handleSignup} className="mt-4">
                     <div className="mb-4">
                         <label className="block text-sm font-semibold mb-2" htmlFor="email">
                             Email
@@ -80,12 +80,12 @@ const Signup = () => {
                     >
                         Sign Up
                     </button>
-                </form>
-                <div className="flex items-center justify-between mt-4">
+                </form> */}
+                {/* <div className="flex items-center justify-between mt-4">
                     <hr className="flex-grow border-t" />
                     <span className="mx-2 text-gray-500">OR</span>
                     <hr className="flex-grow border-t" />
-                </div>
+                </div> */}
                 <button
                     onClick={handleGoogleSignup}
                     className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition mt-4"

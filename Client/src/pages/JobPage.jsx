@@ -1,22 +1,34 @@
 // src/pages/JobPage.jsx
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const JobPage = () => {
-    // Retrieve job ID from the URL parameters
     const { jobId } = useParams();
+    const [job, setJob] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
-    // Mock job data (you can replace this with actual data fetching)
-    const jobs = [
-        { id: '1', jobTitle: "Software Engineer", companyName: "Tech Corp", location: "Remote", description: "Develop and maintain software applications." },
-        { id: '2', jobTitle: "Data Scientist", companyName: "Data Inc.", location: "New York", description: "Analyze data and build predictive models." },
-        { id: '3', jobTitle: "Product Manager", companyName: "Startup LLC", location: "San Francisco", description: "Lead product development and strategy." },
-        { id: '4', jobTitle: "UI/UX Designer", companyName: "Design Studio", location: "Remote", description: "Create intuitive user interfaces and experiences." },
-        { id: '5', jobTitle: "Backend Developer", companyName: "Cloud Solutions", location: "Austin", description: "Build and maintain server-side applications." }
-    ];
+    useEffect(() => {
+        const fetchJob = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/jobs/${jobId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch job');
+                }
+                const data = await response.json();
+                setJob(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    // Find the job based on the jobId
-    const job = jobs.find(job => job.id === jobId);
+        fetchJob();
+    }, [jobId]);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
 
     return (
         <div className="px-4 py-8">
