@@ -12,6 +12,8 @@ import AddJob from "./pages/AddJob"
 import { useEffect, useState } from "react"
 import { AuthContext } from "./context/AuthContext"
 import MyApplications from "./pages/MyApplications"
+import CompanyLogin from "./pages/CompanyLogin"
+import CompanySignup from "./pages/CompanySignUp"
 
 const App = () => {
   const [auth, setAuth] = useState(null);
@@ -34,13 +36,16 @@ const App = () => {
             <Route element={<Homepage />} path="/" />
             <Route path="/jobs" element={<Jobs />} />
             {auth ? (<Route path="/apply/:jobId" element={<Apply />} />) : (<Route path="/apply/:jobId" element={<Login />} />)}
-            {auth && (<Route path="/myapplications" element={<MyApplications applicantEmail={auth?.email || auth?.providerData[0]?.email} />} />)}
+            {auth && (<Route path="/myapplications" element={<MyApplications applicantEmail={auth?.email} />} />)}
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             {/* Administrative routes */}
             <Route path="company/addjob" element={<AddJob />} />
+            <Route path="company/login" element={<CompanyLogin />} />
+            <Route path="company/signup" element={<CompanySignup />} />
+
           </Routes>
         </main>
         <Footer />

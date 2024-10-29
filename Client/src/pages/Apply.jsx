@@ -1,32 +1,47 @@
 // src/pages/JobPage.jsx
-import { useContext, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useContext, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const Apply = () => {
     const { auth } = useContext(AuthContext);
-    // Retrieve job ID from the URL parameters
     const { jobId } = useParams();
-
-    // Mock job data (you can replace this with actual data fetching)
-    const jobs = [
-        { id: '1', jobTitle: "Software Engineer", companyName: "Tech Corp", location: "Remote", description: "Develop and maintain software applications." },
-        { id: '2', jobTitle: "Data Scientist", companyName: "Data Inc.", location: "New York", description: "Analyze data and build predictive models." },
-        { id: '3', jobTitle: "Product Manager", companyName: "Startup LLC", location: "San Francisco", description: "Lead product development and strategy." },
-        { id: '4', jobTitle: "UI/UX Designer", companyName: "Design Studio", location: "Remote", description: "Create intuitive user interfaces and experiences." },
-        { id: '5', jobTitle: "Backend Developer", companyName: "Cloud Solutions", location: "Austin", description: "Build and maintain server-side applications." }
-    ];
-
-    // Find the job based on the jobId
-    const job = jobs.find(job => job.id === jobId);
+    const navigate = useNavigate();
+    const [job, setJob] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     // State for form inputs
     const [formData, setFormData] = useState({
-        firstName: auth.displayName,
+        firstName: auth?.displayName || '',
         lastName: '',
-        email: auth?.email || auth?.providerData[0]?.email,
-        phone: auth?.providerData[0]?.phone
+        email: auth?.email || auth?.providerData?.[0]?.email || '',
+        phone: auth?.providerData?.[0]?.phone || ''
     });
+
+    // Fetch job details based on jobId
+    useEffect(() => {
+        const fetchJob = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/jobs/${jobId}`);
+                if (!response.ok) throw new Error("Failed to fetch job details");
+                const data = await response.json();
+                setJob(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        const checkAdmin = () => {
+            if (!auth?.displayName) {
+                alert("You are an ADMIN ! Cannot Apply")
+            }
+
+        }
+        checkAdmin();
+        fetchJob();
+    }, [jobId]);
 
     // Handle input changes
     const handleChange = (e) => {
@@ -39,23 +54,19 @@ const Apply = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`http://localhost:3000/api/jobs/${jobId}/apply`, {
+            const response = await fetch(`/api/jobs/${jobId}/apply`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to submit application");
-            }
+            if (!response.ok) throw new Error("Failed to submit application");
 
             const result = await response.json();
             alert(`Application submitted for ${job.jobTitle} at ${job.companyName}`);
             console.log(result);
 
-            // Reset the form (optional)
+            // Reset form data
             setFormData({
                 firstName: '',
                 lastName: '',
@@ -68,10 +79,14 @@ const Apply = () => {
         }
     };
 
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+
     return (
         <div className="px-4 py-8">
             {job ? (
                 <div className="max-w-2xl mx-auto bg-white shadow-md rounded-md p-6">
+                    <h1>Job ID: {job._id}</h1>
                     <h2 className="text-3xl font-bold">{job.jobTitle}</h2>
                     <h3 className="text-xl text-gray-700">{job.companyName}</h3>
                     <p className="text-gray-600">{job.location}</p>
@@ -80,7 +95,6 @@ const Apply = () => {
                         <p className="text-gray-800">{job.description}</p>
                     </div>
                     <hr />
-                    {/* Application Form */}
                     <p className='text-gray-800 text-center'>Please fill in the form below to apply for the position</p>
                     <form className="mt-6" onSubmit={handleSubmit}>
                         <div className="grid grid-cols-1 gap-4">
@@ -135,8 +149,9 @@ const Apply = () => {
                             </div>
                         </div>
                         <button
+                            disabled={!auth?.displayName}
                             type="submit"
-                            className="mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-150"
+                            className={`mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-150 ${!auth?.displayName && 'opacity-0'} `}
                         >
                             Apply
                         </button>
