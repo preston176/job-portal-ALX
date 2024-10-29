@@ -11,8 +11,8 @@ const Navbar = () => {
         <nav className="bg-white shadow-md sticky top-0 z-10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
-                    {/* Brand Logo */}
-                    <Link to="/" className="text-xl font-semibold text-blue-600">
+            
+                    <Link to={`${auth ? (auth.displayName ? "/" : "/company/dashboard") : "/"}`} className="text-xl font-semibold text-blue-600">
                         MyBrand
                     </Link>
 
@@ -31,17 +31,15 @@ const Navbar = () => {
                             Contact
                         </Link>
                         <Link
-                            to={auth ? "/jobs" : "/login"}
+                            to={auth && auth?.displayName ? "/jobs" : !auth?.displayName && auth ? "/company/jobs" : "/login"}
                             className="text-gray-600 hover:text-blue-600"
                             onClick={() => setIsOpen(false)}
                         >
                             <button
-
                                 className="px-3 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150">
                                 {
-                                    !auth ? "Get Started" : "Browse Jobs"
+                                    !auth ? "Get Started" : !auth?.displayName ? "View Listings" : "Browse Jobs"
                                 }
-
                             </button>
                         </Link>
                     </div>
@@ -121,13 +119,13 @@ const Navbar = () => {
                             Contact
                         </Link>
                         <Link
-                            to={auth ? "/jobs" : "/login"}
+                            to={auth ? "/jobs" : !auth?.displayName && auth ? "/company/jobs" : "/login"}
                             className="text-gray-600 hover:text-blue-600"
                             onClick={() => setIsOpen(false)}
                         >
                             <button className="px-3 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150">
-                            {
-                                    !auth ? "Get Started" : "Browse Jobs"
+                                {
+                                    !auth ? "Get Started" : !auth?.displayName ? "View Listings" : "Browse Jobs"
                                 }
                             </button>
                         </Link>
