@@ -4,10 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase'; // Import your firebase configuration
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { AuthContext } from '../context/AuthContext';
+import { db } from '../firebase';
+import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
 
 const CompanySignup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [companyAddress, setCompanyAddress] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -17,11 +21,17 @@ const CompanySignup = () => {
     e.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user; // Get the user object
-
-      // Optionally, you can store companyName in the database here if you have a Firestore setup
-      // await addDoc(collection(db, 'users'), { uid: user.uid, email, companyName });
-
+      const user = userCredential.user;
+  
+      // Store additional data in Firestore with a specified document ID
+      await setDoc(doc(db, 'users', user.uid), { // Correctly specify the doc reference
+        uid: user.uid,
+        email,
+        companyName,
+        phoneNumber,
+        companyAddress,
+      });
+  
       setAuth(user); // Set user in Auth context
       localStorage.setItem('authUser', JSON.stringify(user)); // Store user info in localStorage
       navigate('/dashboard'); // Redirect after successful signup
@@ -45,6 +55,32 @@ const CompanySignup = () => {
               id="companyName"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
+              className="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold mb-2" htmlFor="phoneNumber">
+              Phone Number
+            </label>
+            <input
+              type="text"
+              id="phoneNumber"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold mb-2" htmlFor="companyAddress">
+              Company Address
+            </label>
+            <input
+              type="text"
+              id="companyAddress"
+              value={companyAddress}
+              onChange={(e) => setCompanyAddress(e.target.value)}
               className="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -82,6 +118,7 @@ const CompanySignup = () => {
             Sign Up
           </button>
         </form>
+
         <p className="mt-4 text-center">
           Already have an account?{' '}
           <a href="/company/login" className="text-blue-500 hover:underline">
