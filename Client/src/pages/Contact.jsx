@@ -14,21 +14,47 @@ const Contact = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission (e.g., send data to an API)
-        console.log('Form submitted:', formData);
-        // Reset form after submission
-        setFormData({ name: '', email: '', message: '' });
+
+        const form = e.currentTarget;
+        const formData = new FormData(form);
+
+        try {
+            // Submit the form to Formspree
+            const response = await fetch('https://formspree.io/f/mjvngnoq', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    Accept: 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit form');
+            }
+
+            // Show success toast message if submission is successful
+            alert("Message sent successfully")
+
+            // Reset the form after successful submission
+            form.reset();
+        } catch (error) {
+            // Show error toast message if submission fails
+            alert(error);
+            console.error(error);
+        }
     };
+
 
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-6">Contact Us</h1>
 
             <p className="mb-4 text-gray-700">
-                We appreciate your interest in our services. At JobPortal, we are dedicated to providing top-notch solutions tailored to meet your needs.
-                Whether you have a question about our services, need assistance with a project, or want to provide feedback, we are here to help.
+                We appreciate your interest in our services. <br /> <br /> At JobPortal, we are dedicated to providing top-notch solutions tailored to meet your needs.
+               <br /> <br /> Whether you have a question about our services, need assistance with a project, or want to provide feedback, we are here to help.
             </p>
 
             <p className="mb-6 text-gray-700">
