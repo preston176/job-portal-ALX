@@ -18,6 +18,7 @@ import Dashboard from "./pages/Dashboard"
 import CompanyProfile from "./pages/CompanyProfile"
 import CompanyJobs from "./pages/CompanyJobs"
 import EditJob from "./pages/EditJob"
+import ReviewPage from "./pages/ReviewPage"
 
 const App = () => {
   const [auth, setAuth] = useState(null);
@@ -45,6 +46,7 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/review" element={<ReviewPage />} />
             <Route path="/signup" element={<Signup />} />
 
             {/* Administrative routes */}
