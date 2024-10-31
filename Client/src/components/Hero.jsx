@@ -9,9 +9,14 @@ const Hero = () => {
 
 
     const handleClick = () => {
-        (auth && auth.displayName) ? navigate("/jobs") : navigate("/dashboard")
+        if (auth && auth.displayName) {
+            navigate("/jobs");
+        } else if (auth && !auth.displayName) {
+            navigate("/dashboard");
+        } else {
+            navigate("/login");
+        }
     }
-
     return (
         <div className="flex items-center justify-evenly py-20 px-8 bg-gray-100">
             {/* Text Section */}
@@ -22,7 +27,7 @@ const Hero = () => {
                         autoStart: true,
                         loop: true,
                         delay: 60,
-            
+
 
                     }}
                 /></h2>

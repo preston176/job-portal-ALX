@@ -16,7 +16,8 @@ const Apply = () => {
         firstName: auth?.displayName || '',
         lastName: '',
         email: auth?.email || auth?.providerData?.[0]?.email || '',
-        phone: auth?.providerData?.[0]?.phone || ''
+        phone: auth?.providerData?.[0]?.phone || '',
+        approved: "pending",
     });
 
     // Fetch job details based on jobId
@@ -64,14 +65,14 @@ const Apply = () => {
 
             const result = await response.json();
             alert(`Application submitted for ${job.jobTitle} at ${job.companyName}`);
-            console.log(result);
 
             // Reset form data
             setFormData({
                 firstName: '',
                 lastName: '',
                 email: '',
-                phone: ''
+                phone: '',
+                approved: "pending",
             });
         } catch (error) {
             console.error("Error submitting application:", error);
