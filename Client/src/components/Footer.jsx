@@ -6,7 +6,7 @@ const Footer = () => {
             <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
                 <div className="mb-4 md:mb-0">
                     <h2 className="text-lg font-semibold">Job Portal</h2>
-                    <p className="text-sm">© 2024 Your Company. All rights reserved.</p>
+                    <p className="text-sm">© 2024. All rights reserved.</p>
                 </div>
                 <div className="flex space-x-4">
                     <Link to="/about" className="hover:text-gray-400">

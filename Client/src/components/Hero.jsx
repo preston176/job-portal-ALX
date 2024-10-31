@@ -1,7 +1,17 @@
-import React from 'react';
+import { useContext } from "react";
 import Typewriter from "typewriter-effect"
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+    const { auth } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+
+    const handleClick = () => {
+        (auth && auth.displayName) ? navigate("/jobs") : navigate("/dashboard")
+    }
+
     return (
         <div className="flex items-center justify-evenly py-20 px-8 bg-gray-100">
             {/* Text Section */}
@@ -12,7 +22,7 @@ const Hero = () => {
                         autoStart: true,
                         loop: true,
                         delay: 60,
-                        deleteSpeed: 100
+            
 
                     }}
                 /></h2>
@@ -20,7 +30,11 @@ const Hero = () => {
                     Explore thousands of job listings tailored to your skills and preferences. Start your journey toward a fulfilling career.
                 </p>
                 <div className="py-3">
-                    <button className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-800 transition duration-150">Get Started</button>
+                    <button
+                        onClick={handleClick}
+                        className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-800 transition duration-150">{
+                            auth ? "Browse Jobs" : "Get Started"
+                        }</button>
                 </div>
             </div>
 
