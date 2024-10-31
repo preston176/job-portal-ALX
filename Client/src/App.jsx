@@ -16,6 +16,8 @@ import CompanyLogin from "./pages/CompanyLogin"
 import CompanySignup from "./pages/CompanySignUp"
 import Dashboard from "./pages/Dashboard"
 import CompanyProfile from "./pages/CompanyProfile"
+import CompanyJobs from "./pages/CompanyJobs"
+import EditJob from "./pages/EditJob"
 
 const App = () => {
   const [auth, setAuth] = useState(null);
@@ -33,29 +35,31 @@ const App = () => {
       <AuthContext.Provider value={{ auth, setAuth }}>
         <Navbar />
         <main className="bg-gray-100 min-h-screen p-4">
-            <Routes>
-              {/* Homepage Route */}
+          <Routes>
+            {/* Homepage Route */}
 
-              <Route element={<Homepage />} path="/" />
-              <Route path="/jobs" element={<Jobs />} />
-              {auth ? (<Route path="/apply/:jobId" element={<Apply />} />) : (<Route path="/apply/:jobId" element={<Login />} />)}
-              {auth && (<Route path="/myapplications" element={<MyApplications />} />)}
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-        
-          {/* Administrative routes */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/company/addjob" element={<AddJob />} />
-          <Route path="/company/login" element={<CompanyLogin />} />
-          <Route path="/company/profile" element={<CompanyProfile />} />
-          <Route path="/company/signup" element={<CompanySignup />} />
+            <Route element={<Homepage />} path="/" />
+            <Route path="/jobs" element={<Jobs />} />
+            {auth ? (<Route path="/apply/:jobId" element={<Apply />} />) : (<Route path="/apply/:jobId" element={<Login />} />)}
+            {auth && (<Route path="/myapplications" element={<MyApplications />} />)}
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
 
-        </Routes>
-      </main>
-      <Footer />
-    </AuthContext.Provider>
+            {/* Administrative routes */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/company/addjob" element={<AddJob />} />
+            <Route path="/company/login" element={<CompanyLogin />} />
+            <Route path="/company/jobs" element={<CompanyJobs />} />
+            <Route path="/company/edit-job/:jobId" element={<EditJob />} />
+            <Route path="/company/profile" element={<CompanyProfile />} />
+            <Route path="/company/signup" element={<CompanySignup />} />
+
+          </Routes>
+        </main>
+        <Footer />
+      </AuthContext.Provider>
     </BrowserRouter >
   )
 }
