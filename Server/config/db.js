@@ -1,8 +1,8 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config();
 
-const password = process.env.PASSWORD;
-const uri = `mongodb+srv://preston176:${password}@cluster0.kb8ks.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+// ADD MONGODB URI HERE
+const uri = process.env.MONGODB_URI;
 
 let dbInstance;
 
