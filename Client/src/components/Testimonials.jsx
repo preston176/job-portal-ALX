@@ -1,11 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Testimonials = () => {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { auth } = useContext(AuthContext);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+
+    const handleClick = () => {
+        if (auth && auth?.displayName) {
+            navigate("/review");
+        }
+    }
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -73,7 +84,7 @@ const Testimonials = () => {
                 </Splide>
             </div>
             <div className="flex justify-center mt-6">
-                <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-colors">
+                <button onClick={handleClick} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-colors">
                     Leave a Review
                 </button>
             </div>
