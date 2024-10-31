@@ -54,20 +54,49 @@ router.post('/api/jobs/:id/apply', async (req, res) => {
     }
 });
 
-// Get applications by email
+// Get applications by email (optional)
 router.get('/api/applications', async (req, res) => {
     try {
         const { email } = req.query;
 
-        if (!email) {
-            return res.status(400).json({ error: "Applicant email is required" });
-        }
-
         const db = await connectToDb();
-        const applications = await db.collection('applications').find({ "applicant.email": email }).toArray();
+
+        // If an email is provided, filter applications by that email
+        const applications = email
+            ? await db.collection('applications').find({ "applicant.email": email }).toArray()
+            : await db.collection('applications').find({}).toArray(); // Fetch all applications if no email is provided
+
         res.status(200).json({ applications });
     } catch (error) {
         console.error("Error fetching applications:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+router.patch('/api/applications/:id/:action', async (req, res) => {
+    const { id, action } = req.params;
+    const validActions = ['approve', 'reject'];
+
+    if (!validActions.includes(action)) {
+        return res.status(400).json({ error: "Invalid action" });
+    }
+
+    try {
+        const db = await connectToDb();
+        const approvedStatus = action === 'approve' ? 'approved' : 'rejected';
+        
+        const result = await db.collection('applications').updateOne(
+            { _id: new ObjectId(id) },
+            { $set: { "applicant.approved": approvedStatus } }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ error: "Application not found" });
+        }
+
+        res.status(200).json({ message: `Application ${approvedStatus} successfully` });
+    } catch (error) {
+        console.error("Error updating application:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });

@@ -19,6 +19,7 @@ import CompanyProfile from "./pages/CompanyProfile"
 import CompanyJobs from "./pages/CompanyJobs"
 import EditJob from "./pages/EditJob"
 import ReviewPage from "./pages/ReviewPage"
+import ReviewApplications from "./pages/ReviewApplications"
 
 const App = () => {
   const [auth, setAuth] = useState(null);
@@ -50,17 +51,17 @@ const App = () => {
             <Route path="/signup" element={<Signup />} />
 
             {/* Administrative routes */}
-          {auth && !auth.displayName ? (
-            <>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/company/addjob" element={<AddJob />} />
-              <Route path="/company/login" element={<CompanyLogin />} />
-              <Route path="/company/jobs" element={<CompanyJobs />} />
-              <Route path="/company/edit-job/:jobId" element={<EditJob />} />
-              <Route path="/company/profile" element={<CompanyProfile />} />
-              <Route path="/company/signup" element={<CompanySignup />} />
-            </>
-          ) : "Not an admin"}
+
+
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/company/addjob" element={<AddJob />} />
+            <Route path="/company/login" element={<CompanyLogin />} />
+            <Route path="/company/jobs" element={<CompanyJobs />} />
+            <Route path="/company/edit-job/:jobId" element={<EditJob />} />
+            <Route path="/company/profile" element={<CompanyProfile />} />
+            <Route path="/company/review-applications" element={<ReviewApplications />} />
+            <Route path="/company/signup" element={<CompanySignup />} />
+
           </Routes>
         </main>
         <Footer />
