@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const jobsRouter = require('./routes/jobs');
+const reviewsRouter = require('./routes/reviews');
 const { connectToDb } = require('./config/db');
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json()); // Use express.json() instead of body-parser
 
 // Use the jobs routes
 app.use(jobsRouter);
+app.use(reviewsRouter);
 
 // Connect to database on app startup
 (async () => {
