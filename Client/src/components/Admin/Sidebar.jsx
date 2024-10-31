@@ -30,12 +30,12 @@ const Sidebar = () => {
                     <span>Home</span>
                 </NavLink>
                 <NavLink
-                    to="/analytics"
+                    to="/company/review-applications"
                     className="flex items-center px-6 py-3 hover:bg-gray-700 transition-colors"
                     activeClassName="bg-gray-700"
                 >
                     <FaChartBar className="mr-3" />
-                    <span>Analytics</span>
+                    <span>Review Applications</span>
                 </NavLink>
                 <NavLink
                     to="/company/profile"

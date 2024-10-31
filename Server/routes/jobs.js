@@ -33,7 +33,7 @@ router.get('/api/jobs', async (req, res) => {
 router.post('/api/jobs/:id/apply', async (req, res) => {
     try {
         const jobId = req.params.id;
-        const { firstName, lastName, email, phone } = req.body;
+        const { firstName, lastName, email, phone, approved = "pending" } = req.body;
 
         if (!firstName || !lastName || !email || !phone) {
             return res.status(400).json({ error: "All fields are required" });
@@ -84,7 +84,7 @@ router.patch('/api/applications/:id/:action', async (req, res) => {
     try {
         const db = await connectToDb();
         const approvedStatus = action === 'approve' ? 'approved' : 'rejected';
-        
+
         const result = await db.collection('applications').updateOne(
             { _id: new ObjectId(id) },
             { $set: { "applicant.approved": approvedStatus } }
@@ -216,6 +216,44 @@ router.delete('/api/jobs/:jobId', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
+// Get activities (combined jobs and applications information)
+router.get('/api/activities', async (req, res) => {
+    try {
+        const db = await connectToDb();
+
+        // Fetch jobs and applications
+        const jobs = await db.collection('jobs').find({}).toArray();
+        const applications = await db.collection('applications').find({}).toArray();
+
+        // Combine data for activities
+        const activities = jobs.map(job => {
+            const relatedApplications = applications.filter(app => app.jobId === job._id.toString());
+            return {
+                job: {
+                    id: job._id,
+                    title: job.title,
+                    company: job.company,
+                    location: job.location,
+                    description: job.description,
+                    createdAt: job.createdAt,
+                },
+                applications: relatedApplications.map(app => ({
+                    id: app._id,
+                    applicant: app.applicant,
+                    appliedAt: app.appliedAt,
+                    status: app.applicant.approved, // Assuming 'approved' is a status field
+                })),
+            };
+        });
+
+        res.status(200).json(activities); // Return the combined activities
+    } catch (error) {
+        console.error("Error fetching activities:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
 
 
 module.exports = router;
