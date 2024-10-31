@@ -9,8 +9,6 @@ const MyApplications = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-
-    // Fetch applications the applicant has applied to from the API or localStorage
     useEffect(() => {
         const fetchAppliedJobs = async () => {
             if (!auth?.email) {
@@ -35,7 +33,7 @@ const MyApplications = () => {
                 const apps = data.applications || [];
                 setApplications(apps);
 
-                localStorage.setItem(`applications_${auth.email}`, JSON.stringify(apps)); // Cache in localStorage
+                localStorage.setItem(`applications_${auth.email}`, JSON.stringify(apps));
             } catch (error) {
                 setError('Failed to fetch applications. Please try again later.');
                 console.error("Error fetching applications:", error);
@@ -47,7 +45,6 @@ const MyApplications = () => {
         fetchAppliedJobs();
     }, [auth]);
 
-    // Fetch job details based on applications
     useEffect(() => {
         const fetchJobDetails = async () => {
             const jobs = await Promise.all(
@@ -63,18 +60,15 @@ const MyApplications = () => {
                             throw new Error('Failed to fetch job details');
                         }
                         const jobData = await jobResponse.json();
-
-                        localStorage.setItem(`job_${application.jobId}`, JSON.stringify(jobData)); // Cache job data
+                        localStorage.setItem(`job_${application.jobId}`, JSON.stringify(jobData));
                         return jobData;
                     } catch (error) {
                         console.error("Error fetching job details:", error);
-                        return null; // Return null for any errors
+                        return null;
                     }
                 })
             );
-            // Filter out any null results (in case of errors)
             setJobsData(jobs.filter((job) => job !== null));
-
         };
 
         if (applications.length > 0) {
@@ -121,7 +115,17 @@ const MyApplications = () => {
                             <h3 className="text-md font-medium text-gray-600">{job.company}</h3>
                             <p className="text-sm text-gray-500">{job.location}</p>
                             <p className="mt-2 text-gray-700">{job.description}</p>
-                            <p className='text-sm text-gray-500'>Applied on {new Date(applications[index].appliedAt).toLocaleString()}
+                            <p className='text-sm text-gray-500'>Applied on {new Date(applications[index].appliedAt).toLocaleString()}</p>
+                            <p className='text-sm text-gray-500'>Status: 
+                                <button 
+                                    className={`ml-2 px-2 py-1 rounded text-white ${
+                                        applications[index].applicant.approved === "approved" ? 'bg-green-500' :
+                                        applications[index].applicant.approved === "rejected" ? 'bg-red-500' :
+                                        'bg-yellow-500'
+                                    }`}
+                                >
+                                    {applications[index].applicant.approved.charAt(0).toUpperCase() + applications[index].applicant.approved.slice(1)}
+                                </button>
                             </p>
                         </div>
                     ))

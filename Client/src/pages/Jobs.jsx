@@ -33,6 +33,7 @@ const Jobs = () => {
 
         if (storedJobs) {
             setJobsData(JSON.parse(storedJobs));
+            fetchJobs();
             setLoading(false);
         } else {
             fetchJobs();

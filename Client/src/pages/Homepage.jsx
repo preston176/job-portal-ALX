@@ -29,18 +29,19 @@ const Homepage = () => {
     };
 
     // Check for local storage data and fetch updates if needed
-    useEffect(() => {
-        const storedJobs = localStorage.getItem('jobs');
-        
+    useEffect( () => {
+        const storedJobs  = localStorage.getItem('jobs');
+
         if (storedJobs) {
             setJobs(JSON.parse(storedJobs));
+            fetchJobs()
         }
 
         // Fetch fresh job data if not in local storage or to update cache
         fetchJobs();
 
         // Set an interval to check for updates periodically (e.g., every 5 minutes)
-        const updateInterval = setInterval(fetchJobs, 300000); // 300000ms = 5 minutes
+        const updateInterval = setInterval(fetchJobs, 1000); // 300000ms = 5 minutes
         return () => clearInterval(updateInterval); // Clear interval on component unmount
     }, []);
 

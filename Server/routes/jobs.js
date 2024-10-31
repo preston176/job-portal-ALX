@@ -42,7 +42,7 @@ router.post('/api/jobs/:id/apply', async (req, res) => {
         const db = await connectToDb();
         const application = {
             jobId,
-            applicant: { firstName, lastName, email, phone },
+            applicant: { firstName, lastName, email, phone, approved },
             appliedAt: new Date(),
         };
 
