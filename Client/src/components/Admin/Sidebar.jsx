@@ -1,9 +1,20 @@
 // src/components/Sidebar.jsx
-import React from 'react';
+import React, { useContext } from 'react';
 import { FaHome, FaChartBar, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 const Sidebar = () => {
+    const { setAuth } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleSignOut = () => {
+
+        setAuth(null); // Clear user from Auth context
+        localStorage.removeItem('authUser'); // Remove user info from localStorage
+        navigate("/")
+    }
+
     return (
         <aside className="w-64 bg-gray-800 text-white h-screen flex flex-col">
             <div className="flex items-center justify-center h-20 border-b border-gray-700">
@@ -44,13 +55,14 @@ const Sidebar = () => {
                 </NavLink>
             </nav>
             <div className="border-t border-gray-700">
-                <NavLink
-                    to="/logout"
+                <button
+                    onClick={handleSignOut}
+                    to="/"
                     className="flex items-center px-6 py-3 hover:bg-gray-700 transition-colors"
                 >
                     <FaSignOutAlt className="mr-3" />
                     <span>Logout</span>
-                </NavLink>
+                </button>
             </div>
         </aside>
     );
