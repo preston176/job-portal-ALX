@@ -21,9 +21,20 @@ const Navbar = () => {
                         <Link to="/" className="text-gray-600 hover:text-blue-600">
                             Home
                         </Link>
+
+                        {
+                            auth && auth.displayName && <Link
+                                to="/myapplications"
+                                className="text-gray-600 hover:text-blue-600"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                My Applications
+                            </Link>
+                        }
                         <Link to="/jobs" className="text-gray-600 hover:text-blue-600">
                             Jobs
                         </Link>
+
                         <Link to="/about" className="text-gray-600 hover:text-blue-600">
                             About
                         </Link>
@@ -104,6 +115,15 @@ const Navbar = () => {
                         >
                             Jobs
                         </Link>
+                        {
+                            auth.displayName && <Link
+                                to="/myapplications"
+                                className="text-gray-600 hover:text-blue-600"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                My Applications
+                            </Link>
+                        }
                         <Link
                             to="/about"
                             className="text-gray-600 hover:text-blue-600"
